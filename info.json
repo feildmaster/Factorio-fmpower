@@ -1,0 +1,9 @@
+{
+  "name": "fmpower",
+  "version": "1.0.0",
+  "factorio_version": "0.15",
+  "title": "Power Pole Override",
+  "author": "feildmaster",
+  "description": "Removes redundant power poles",
+  "dependencies": ["base >= 0.15.0"]
+}
