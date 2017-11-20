@@ -18,10 +18,9 @@ script.on_event(defines.events.on_built_entity, function(event)
         -- Fix: Medium Poles kill Big Poles
         -- supply area is worse and not wired
         if pole.prototype.supply_area_distance < area and not wired(pole) then
-            if s["fm-pole-override-mode"].value then
-                if deconstruct(pole) then count = count + 1 end
-            else
-                if destroy(pole, player) then count = count + 1 end
+            -- Deconstruct or destroy
+            if s["fm-pole-override-mode"].value and deconstruct(pole) or destroy(pole, player) then
+                count = count + 1
             end
         end
     end
