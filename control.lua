@@ -11,24 +11,25 @@ script.on_event(defines.events.on_built_entity, function(event)
     -- Search surface area for poles inside "supply_area_distance"
     local area = entity.prototype.supply_area_distance
     local poles = entity.surface.find_entities_filtered{type = eType, area = {{entity.position.x - area, entity.position.y - area}, {entity.position.x + area, entity.position.y + area}}}
-    if poles then
-        local count = 0
-        for _,pole in ipairs(poles) do
-            -- Fix: Medium Poles kill Big Poles
-            -- supply area is worse and not wired
-            if pole.prototype.supply_area_distance < area and not wired(pole) then
-                if s["fm-pole-override-mode"].value then
-                    if deconstruct(pole) then count = count + 1 end
-                else
-                    if destroy(pole, player) then count = count + 1 end
-                end
+    if not poles then return end
+    
+    local count = 0
+    for _,pole in ipairs(poles) do
+        -- Fix: Medium Poles kill Big Poles
+        -- supply area is worse and not wired
+        if pole.prototype.supply_area_distance < area and not wired(pole) then
+            if s["fm-pole-override-mode"].value then
+                if deconstruct(pole) then count = count + 1 end
+            else
+                if destroy(pole, player) then count = count + 1 end
             end
         end
-        -- Send message?
-        if s["fm-pole-override-debug"].value and count > 0 then
-            player.print((s["fm-pole-override-mode"].value and "Marked" or "Removed") .." " .. count .. " entities")
-        end
-    end 
+    end
+    
+    -- Send message?
+    if s["fm-pole-override-debug"].value and count > 0 then
+        player.print((s["fm-pole-override-mode"].value and "Marked" or "Removed") .." " .. count .. " entities")
+    end
 end)
 
 function deconstruct(e)
